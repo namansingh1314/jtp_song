@@ -1,4 +1,5 @@
 FROM python:3.10-slim
+
 WORKDIR /backend
 COPY ./app ./app
 COPY ./dataset ./dataset

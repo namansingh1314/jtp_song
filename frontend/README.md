@@ -26,12 +26,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 Make sure you have the backend running at `http://localhost:8000`
 
-## Customization
-
-- You can change the logo by replacing `public/logo.png`.
-- Tweak colors and layout in the components or Tailwind config.
-- If you want to deploy, you’ll probably need to update the backend API URL.
-
 ## Docker
 
 If you want to run the frontend in Docker:

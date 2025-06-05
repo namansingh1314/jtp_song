@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:15
+    container_name: songrec-db
+    restart: always
+    environment:
+      POSTGRES_USER: songrec
+      POSTGRES_PASSWORD: songrecpass
+      POSTGRES_DB: songrecdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://songrec:songrecpass@db:5432/songrecdb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+
+  frontend:
+    build: ./frontend
+    container_name: songrec-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app

@@ -1,6 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import SongList from "@/components/SongList";
+import { useAuth } from "@/context/AuthContext";
 
 type Song = {
   filename: string;
@@ -8,11 +10,20 @@ type Song = {
 };
 
 export default function Predict() {
+  const { user, token } = useAuth();
+  const router = useRouter();
+
   const [query, setQuery] = useState("");
   const [num, setNum] = useState(5);
   const [results, setResults] = useState<Song[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
 
   const handleRecommend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +35,10 @@ export default function Predict() {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/recommend`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
           body: JSON.stringify({ song_title: query, num_recommendations: num }),
         }
       );
@@ -42,9 +56,22 @@ export default function Predict() {
     setLoading(false);
   };
 
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow text-center">
+          <h2 className="text-2xl font-bold mb-2">Recommendations</h2>
+          <p className="text-gray-700 dark:text-gray-200">
+            Please log in to get song recommendations.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-[65vh]">
-      <div className="max-w-xl mx-auto mt-24 mb-20 p-8 bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-lg">
+    <div className="flex items-center justify-center min-h-[80vh]">
+      <div className="w-full max-w-xl bg-white/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-lg">
         <h2 className="text-3xl font-bold text-indigo-700 dark:text-yellow-300 mb-2">
           Get Song Recommendations
         </h2>

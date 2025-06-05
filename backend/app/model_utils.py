@@ -18,7 +18,7 @@ def load_song_data(csv_path):
 
 def train_recommender(song_df):
     """Train a NearestNeighbors model using song features."""
-    # One-hot encode the label column
+    
     features = pd.get_dummies(song_df[['label']])
 
     

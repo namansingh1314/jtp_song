@@ -3,3 +3,8 @@ uvicorn
 pandas
 scikit-learn
 pydantic
+psycopg2-binary
+sqlalchemy
+passlib[bcrypt]
+python-jose[cryptography]
+fastapi-users

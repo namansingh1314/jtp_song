@@ -5,6 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-blend-hard-light bg-repeat-x bg-center `}
-        style={{ backgroundImage: "url('/bg.gif')" }}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-[url('/bg.gif')] bg-repeat-x bg-center bg-blend-hard-light bg-[url('/bg_V1.gif')]  `}
       >
         <NextTopLoader
           color="#FFD700" // Gold-like yellow
@@ -54,9 +54,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
-          <Footer />
+          <AuthProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

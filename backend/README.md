@@ -4,7 +4,7 @@ This is the backend for the Song Recommendation System. It’s built with FastAP
 
 ## Setup
 
-- Needs Python 3.10+ and pip
+- Needs Python 3.11 and pip
 - Install requirements:  
   pip install -r requirements.txt
 
@@ -36,5 +36,4 @@ You get recommended songs back.
 ## Notes
 
 - Only tested on Windows so far.
-- If you change the csv, retrain the model or it breaks.
-- Sorry for any typos, wrote this quick!
+- If you change the csv, retrain the model.
