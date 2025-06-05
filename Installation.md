@@ -4,8 +4,16 @@ Welcome to SongRec!
 This guide will help you get the full stack running—either the classic way (separate terminals for backend, frontend, and database), or the easy way (Docker Compose).
 
 ---
+## Option 1: Run Everything with Docker Compose (Recommended)
+- Make sure you have Docker and Docker Compose installed.
+- From the root of the project, just run:
 
-## Option 1: Run Everything Separately (Local Dev)
+  `docker-compose up --build`
+
+- This will spin up the database, backend, and frontend containers.
+- Visit [http://localhost:3000](http://localhost:3000) for the app.
+
+## Option 2: Run Everything Separately (Local Dev)
 
 ### 1. Database (PostgreSQL)
 
@@ -51,12 +59,6 @@ python train_model.py # Only needed the first time or if after updating dataset
 
 ---
 
-## Option 2: Run Everything with Docker Compose (Recommended)
 
-- Make sure you have Docker and Docker Compose installed.
-- From the root of the project, just run:
 
-  `docker-compose up --build`
 
-- This will spin up the database, backend, and frontend containers.
-- Visit [http://localhost:3000](http://localhost:3000) for the app.
