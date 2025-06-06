@@ -9,8 +9,9 @@ from .db import engine, SessionLocal
 from .models import Base, SearchHistory, User
 
 class RecommendationItem(BaseModel):
-    filename: str
-    label: str
+    Song_Name: str
+    Artist: str
+    Sentiment_Label: str
 
 class RecommendationResponse(BaseModel):
     recommendations: list[RecommendationItem]
@@ -29,7 +30,7 @@ app.add_middleware(
 app.include_router(auth_router)
 
 class RecommendationRequest(BaseModel):
-    song_title: str
+    emotion: str
     num_recommendations: int = 5
 
 def get_db():
@@ -51,7 +52,7 @@ async def get_recommendations(
 ):
     try:
         recommendations = recommender.recommend(
-            request.song_title, request.num_recommendations
+            request.emotion, request.num_recommendations
         )
         items = [RecommendationItem(**rec) for rec in recommendations]
 
@@ -59,7 +60,7 @@ async def get_recommendations(
         if current_user:
             history_entry = SearchHistory(
                 user_id=current_user.id,
-                query=request.song_title,
+                query=request.emotion,
                 results=[item.dict() for item in items], 
             )
             db.add(history_entry)

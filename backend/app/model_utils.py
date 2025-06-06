@@ -10,21 +10,21 @@ def load_song_data(csv_path):
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
         raise ValueError(f"File not found: {csv_path}")
-    if not {'filename', 'label'}.issubset(df.columns):
+    if not {'Song_Name', 'Sentiment_Label', 'Tempo (BPM)'}.issubset(df.columns):
         
-        raise ValueError("CSV must contain 'filename' and 'label' columns.")
-    df = df.dropna(subset=['filename', 'label'])
+        raise ValueError("CSV must contain 'Song_Name', 'Sentiment_Label' and 'Tempo (BPM)' columns.")
+    df = df.dropna(subset=['Song_Name', 'Sentiment_Label', 'Tempo (BPM)'])
     return df
 
 def train_recommender(song_df):
     """Train a NearestNeighbors model using song features."""
     
-    features = pd.get_dummies(song_df[['label']])
+    features = pd.get_dummies(song_df[['Sentiment_Label']])
 
     
     
-    if 'tempo' in song_df.columns:
-        features['tempo'] = song_df['tempo']
+    if 'Tempo (BPM)' in song_df.columns:
+        features['tempo'] = song_df['Tempo (BPM)']
     model = NearestNeighbors(n_neighbors=10, algorithm='auto')
     model.fit(features)
 

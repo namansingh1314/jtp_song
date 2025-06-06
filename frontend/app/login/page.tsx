@@ -15,11 +15,16 @@ export default function Login() {
     e.preventDefault();
     setErr("");
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const res = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
+        }/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        }
+      );
       if (!res.ok) {
         const data = await res.json();
         setErr(data.detail || "Login failed");

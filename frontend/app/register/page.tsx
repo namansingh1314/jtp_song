@@ -19,7 +19,9 @@ export default function Register() {
     setSuccess("");
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/register`,
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
+        }/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -34,7 +36,9 @@ export default function Register() {
       setSuccess("Registration successful! Logging you in...");
 
       const loginRes = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
+        }/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -1,11 +1,9 @@
 # Installation & Setup Guide
+[![Watch the demo](https://img.youtube.com/vi/TNHCR2FV9fM/maxresdefault.jpg)](https://youtu.be/TNHCR2FV9fM)
 
-Welcome to SongRec!  
-This guide will help you get the full stack running—either the classic way (separate terminals for backend, frontend, and database), or the easy way (Docker Compose).
+## Option 1: Run Everything with Docker Compose
 
----
-## Option 1: Run Everything with Docker Compose (Recommended)
-- Make sure you have Docker and Docker Compose installed.
+- Make sure you have Docker desktop running
 - From the root of the project, just run:
 
   `docker-compose up --build`
@@ -13,13 +11,14 @@ This guide will help you get the full stack running—either the classic way (se
 - This will spin up the database, backend, and frontend containers.
 - Visit [http://localhost:3000](http://localhost:3000) for the app.
 
-## Option 2: Run Everything Separately (Local Dev)
+
+##Option 2:Or you can Run Everything Separately
 
 ### 1. Database (PostgreSQL)
 
 - Make sure you have PostgreSQL 15+ installed.
-- Create a database called `songrecdb` (or whatever you want, just update configs).
-- Set up a user (e.g. `songrec` / `songrecpass`).
+- Create a database called `songrecdb`
+- Set up a user 
 
 Or, if you want to use Docker just for the DB:
 
@@ -33,7 +32,6 @@ Or, if you want to use Docker just for the DB:
 
 - `pip install -r requirements.txt`
 
-Make sure your songs.csv is in backend/dataset/
 cd app
 python train_model.py # Only needed the first time or if after updating dataset
 
@@ -41,7 +39,7 @@ python train_model.py # Only needed the first time or if after updating dataset
 
 - `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 
-- The backend should now be running at [http://localhost:8000](http://localhost:8000).
+- The backend should now be running at [http://localhost:8000]
 
 ### 3. Frontend (Next.js)
 
@@ -49,7 +47,7 @@ python train_model.py # Only needed the first time or if after updating dataset
 - `npm install`
 - `npm run dev`
 
-- The frontend will be at [http://localhost:3000](http://localhost:3000).
+- The frontend will be at [http://localhost:3000]
 
 ### 4. Environment Variables
 
@@ -59,6 +57,12 @@ python train_model.py # Only needed the first time or if after updating dataset
 
 ---
 
+## Option 2: Run Everything with Docker Compose (Recommended)
 
+- Make sure you have Docker and Docker Compose installed.
+- From the root of the project, just run:
 
+  `docker-compose up --build`
 
+- This will spin up the database, backend, and frontend containers.
+- Visit [http://localhost:3000](http://localhost:3000) for the app.

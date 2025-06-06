@@ -4,7 +4,7 @@ import os
 
 base_dir = os.path.dirname(__file__)
 project_root = os.path.abspath(os.path.join(base_dir, '..', '..'))
-csv_file = os.path.join(project_root, 'backend', 'dataset', 'songs.csv')
+csv_file = os.path.join(project_root, 'backend', 'dataset', 'music_sentiment_dataset.csv')
 model_file = os.path.join(project_root, 'backend', 'app', 'trained_recommender.pkl')
 
 

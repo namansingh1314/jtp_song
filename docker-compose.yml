@@ -12,11 +12,17 @@ services:
       - "5432:5432"
     volumes:
       - ./database/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U songrec -d songrecdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
     build: ./backend
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgresql://songrec:songrecpass@db:5432/songrecdb
     ports:

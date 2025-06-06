@@ -3,11 +3,27 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+type SongResult = {
+  Song_Name: string;
+  Artist: string;
+  Sentiment_Label: string;
+};
+
 type HistoryItem = {
   query: string;
-  results: { filename: string; label: string }[];
+  results: SongResult[];
   timestamp: string;
 };
+
+function deduplicateResults(results: SongResult[]): SongResult[] {
+  const seen = new Set<string>();
+  return results.filter((res) => {
+    const key = `${res.Song_Name}|${res.Artist}|${res.Sentiment_Label}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 
 export default function Profile() {
   const { user, token, logout } = useAuth();
@@ -23,17 +39,27 @@ export default function Profile() {
       router.push("/login");
       return;
     }
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    fetch(
+      `${
+        process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
+      }/userinfo`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         setEmail(data.email);
         setEditEmail(data.email);
       });
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/history`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    fetch(
+      `${
+        process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
+      }/history`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
       .then((res) => res.json())
       .then((data) => setHistory(data.history));
   }, [token, router]);
@@ -41,14 +67,19 @@ export default function Profile() {
   const handleEmailUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setEditMsg("");
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ email: editEmail }),
-    });
+    const res = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
+      }/userinfo`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ email: editEmail }),
+      }
+    );
     if (res.ok) {
       setEmail(editEmail);
       setEditMsg("Email updated!");
@@ -146,10 +177,13 @@ export default function Profile() {
                       Results:
                     </span>
                     <ul className="ml-3 list-disc">
-                      {h?.results?.map((res, idx) => (
+                      {deduplicateResults(h?.results || []).map((res, idx) => (
                         <li key={idx} className="text-sm">
-                          <span className="font-mono">{res.filename}</span>{" "}
-                          <span className="text-gray-500">({res.label})</span>
+                          <span className="font-mono">{res.Song_Name}</span>{" "}
+                          <span className="text-gray-500">by {res.Artist}</span>{" "}
+                          <span className="bg-yellow-200 dark:bg-yellow-400 text-yellow-800 dark:text-gray-900 px-2 py-0.5 rounded text-xs font-bold ml-2">
+                            {res.Sentiment_Label}
+                          </span>
                         </li>
                       ))}
                     </ul>

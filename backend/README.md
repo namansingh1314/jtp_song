@@ -28,7 +28,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 POST `/recommend` with:
 {
-"song_title": "jazz" // or "jazz.00025.7.wav"
+"emotion": "happy"
 }
 
 You get recommended songs back.
