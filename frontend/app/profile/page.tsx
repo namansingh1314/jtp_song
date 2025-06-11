@@ -49,9 +49,11 @@ export default function Profile() {
     )
       .then((res) => res.json())
       .then((data) => {
-        setEmail(data.email);
-        setEditEmail(data.email);
+        const safeEmail = data.email ?? "";
+        setEmail(safeEmail);
+        setEditEmail(safeEmail);
       });
+
     fetch(
       `${
         process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000"
@@ -143,10 +145,10 @@ export default function Profile() {
           Search History
         </h3>
         <ul className="bg-gray-100 dark:bg-gray-800 rounded p-4 max-h-64 overflow-y-auto space-y-2">
-          {history.length === 0 ? (
+          {history?.length === 0 ? (
             <li className="text-gray-500">No history yet.</li>
           ) : (
-            history.map((h, i) => (
+            history?.map((h, i) => (
               <li
                 key={i}
                 className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 pb-2"
